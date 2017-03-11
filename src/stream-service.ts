@@ -1,23 +1,5 @@
 import { Stream } from './stream'
-import { Adapter } from './util'
-
-interface Connectable {
-}
-
-class Connector {
-  constructor() {
-
-  }
-
-  connect(service: StreamService) {
-  }
-
-  connectAll(connectables: Connectable[]) {
-    connectables.map(connectable => {
-      connectable
-    })
-  }
-}
+import { Adapter, Connector } from './connector'
 
 export class StreamService {
   protected stream: Stream
@@ -27,6 +9,11 @@ export class StreamService {
   private adapters: Adapter[]
 
   constructor() {
+    this.configure()
+  }
+
+  emit(event: any) {
+    this.stream.emit(event)
   }
 
   subscribe(subscriber) {

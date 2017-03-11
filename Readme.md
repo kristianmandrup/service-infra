@@ -6,23 +6,45 @@ The design is based on best practice concepts from Micro Services infrastructure
 - [The Tao of Micro Services book](http://www.richardrodger.com/tao-of-microservices#.WMPLQ2TytE4)
 - [Seneca](http://senecajs.org/) Micro Services framework
 
-## Services
-- IO service
-- Service (IO)
-- Data (IO) service
-- API (IO) service
-- Logger (Data) service
+### Services
+This library makes the following Services are available:
+- `StreamService` (`Stream` wrapper)
+- IOService (`StreamService` with `Input` and `Output`)
+- Service (`IOService`)
+- DataService (`IOService` for handling data)
+- APIService (`IOService` for interacting with `Connection`s to external event sources)
+- LogService (`StoreService` event logger)
 
-Data service uses one or more
-- Storage service
+Any sink (consumer) plugged into a `Service` and react on events as it sees fit.
+A `Component` can and be plugged into a `Service` which is then considered a `ComponentService`.
 
-But may orchestrate:
-- Validator service
-- Query service
+A `Component` can wrap (or be connected) to a View Component such as a [Custom Element v1](https://developers.google.com/web/fundamentals/getting-started/primers/customelements) of the DOM. This can be considered "Data Reporting", ie. presenting a view of the data (see `DataService`). The view can be the raw data or a projection of the data in the form of queries (`QueryService`) and transformations (ie. "Materialized Views")
 
-A Data service may be used as a Cache service for any IO (ie. taking Input data) service
+A Data service uses one or more
+- `StoreService`
 
-## Other Inspirations
+A `StoreService` may use any kind of data type for storage or even an in-memory Database.
+
+A `DataService` may additionally orchestrate one or more:
+- `ValidatorService` (validate data to store)
+- `QueryService` (find data of interest for particular data consumers ie. Views etc)
+
+A `DataService` may be used as a `CacheService` for any IO (ie. to cache incoming data)
+
+A `Component` is an event sink (or event consumer). A component may dispatch `Action`s as response to
+user actions etc. The actions are converted into `Event`s and emitted on the service `Stream`.
+
+An `Event` must always have a unique ID and a `createdAt` timestamp for tracking purposes.
+
+### Plug and Play
+The services are designed to be Plug and Play, ie. easy to compose together. Any service has a set of Adapters (slots) and a plug. A service can be plugged into one service Adapter. When two services are plugged, the Output stream of each service is streamed into the Input stream of the other service.
+
+A ComponentService can only be plugged into the App service.
+
+### Gate
+A `Gate` (similar to a [logic gate](https://en.wikipedia.org/wiki/Logic_gate) in electronics) controls how two or more streams are merged into one.
+
+## Other stream based frameworks of interest
 [NinjaGoat MVVM framework](https://github.com/tierratelematics/ninjagoat/wiki/Getting-started)
 
 ## Dev tools

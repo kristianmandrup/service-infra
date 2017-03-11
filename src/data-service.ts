@@ -1,24 +1,25 @@
 import { Service } from './service'
 import { Container, injectable, inject } from 'inversify'
-import { Adapter } from './util'
+import { Adapter } from './connector'
 import { Stream } from './stream'
 
 @injectable()
 export class DataService extends Service {
   // on Input
-  updates: Stream
+  // updates: Stream
 
   // on Output
-  updated: Stream
-  errors: Stream
+  // updated: Stream
+  // errors: Stream
 
   constructor() {
     super()
-
-    this.input.addStream('updates', this.updates)
+    this.configure()
   }
 
   configure() {
-    this.updates.subscribe(this.connector)
+    this.input.subscribe(this)
+    this.input.add('updates')
+    this.output.add('updated', 'errors')
   }
 }

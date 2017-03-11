@@ -1,6 +1,8 @@
 import { Container, injectable, inject } from 'inversify'
 import { StreamService } from './stream-service'
-import { Input, Output, Adapter, Plug } from './util'
+import { Input, Output } from './io'
+import { Adapter, Plug } from './connector'
+
 
 export class IOService extends StreamService {
   protected input: Input

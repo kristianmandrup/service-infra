@@ -4,7 +4,8 @@
   "description": "Stream/Event based Service Infrastructure",
   "main": "index.js",
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "no-map": "find ./lib -name '*js.map' -print -exec rm -r {} \\;"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,8 @@
     "ava": "^0.18.2",
     "harmony-proxy": "^1.0.1",
     "inversify-dts": "^3.0.0",
-    "reflect-metadata": "^0.1.10"
+    "reflect-metadata": "^0.1.10",
+    "tslint": "^4.5.1",
+    "typescript": "^2.2.1"
   }
 }
