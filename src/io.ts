@@ -35,6 +35,14 @@ export class GateWay {
   subscribe(observer: any, name?: String) {
     return name ? this.streams.get(name).subscribe(observer) : this.stream.subscribe(observer)
   }
+
+  getStream(name) {
+    return this.streams.get(name)
+  }
+
+  emit(name, event) {
+    this.getStream(name).emit(event)
+  }
 }
 
 

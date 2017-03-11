@@ -3,12 +3,12 @@ import { StreamService } from './stream-service'
 import { Subject, Subscription, Subscriber } from '@reactivex/rxjs'
 
 test('new', t => {
-  const service = new StreamService()
+  const service = new StreamService('x')
   t.is(service.constructor, StreamService)
 })
 
 test('subscribe', async t => {
-  const service = new StreamService()
+  const service = new StreamService('x')
   const subscriber = new Subscriber()
   const emitEvent = 1
 

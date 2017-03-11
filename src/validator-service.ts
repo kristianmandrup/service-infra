@@ -2,30 +2,28 @@ import { Service } from './service'
 import { Stream } from './stream'
 
 export class ValidatorService extends Service {
-  // on Input
-  protected data: Stream
-
-  // on Output
-  protected valid: Stream
-  protected invalid: Stream
-
-  constructor() {
-    super()
+  constructor(name: '') {
+    super('validator:' + name)
   }
 
   configure() {
-    this.data.subscribe(this.validate)
+    this.input.subscribe(this)
+    this.input.addStream('data')
+    this.output.addStream('valid', 'invalid')
+
+    // this.input.subscribe('data', this.validate)
   }
 
   validate(data: Object): void {
-    this.isValid(data) ? this.addValid(data) : this.addInValid(data)
+    let valid = this.isValid(data)
+    valid ? this.emit('valid', data, valid) : this.emit('invalid', data, valid)
   }
 
   isValid(data: Object): boolean {
     return true
   }
 
-  addValid(data: Object): void {
-    this.valid.emit({ valid: true, data })
+  emit(name: String, data: Object, validity: boolean): void {
+    this.out.emit(name, { valid: validity, data })
   }
 }
