@@ -3,18 +3,29 @@ import { Subject, Subscription } from '@reactivex/rxjs'
 /*
  * Abstracted Stream, such as Observable
 **/
-
 export class Stream {
   protected source: Subject<any>
-  protected name: String
+  protected subscriptions: Map<String, Subscription>
+  public name: String
+
 
   constructor(name: String) {
     this.name = name
     this.source = new Subject()
   }
 
-  subscribe(subscriber) {
-    this.source.subscribe(subscriber)
+  subscribe(subscriber: any) {
+    this.subscriptions.set(subscriber.name, this.source.subscribe(subscriber))
+  }
+
+  unsubscribe(name: String) {
+    this.subscriptions.get(name).unsubscribe()
+  }
+
+  unsubscribeAll() {
+    for (let key of this.subscriptions.keys()) {
+      this.unsubscribe(key)
+    }
   }
 
   emit(event: Object) {
@@ -22,27 +33,8 @@ export class Stream {
   }
 }
 
-// @injectable()
-export class Streamer {
-  streams: Map<String, Stream[]> // TODO: should be Interface
-
+export class StreamFactory {
   createStream(name): Stream {
     return new Stream(name)
-  }
-
-  createFrom(name: String) {
-    this.add(this.createStream(name))
-  }
-
-  add(stream) {
-    this.streams.set(stream.name, stream)
-  }
-
-  remove(name) {
-    this.streams.delete(name)
-  }
-
-  // stream: Stream
-  constructor() {
   }
 }

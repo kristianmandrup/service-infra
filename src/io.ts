@@ -1,24 +1,44 @@
-import { Stream, Streamer } from './stream'
+import { Stream, StreamFactory } from './stream'
 
 export class GateWay {
-  streamer: Streamer
+  protected streams: Map<String, Stream> // TODO: should be Interface
+  protected stream: Stream
 
-  add(...names: String[]) {
-    names.map(name => this.streamer.createFrom(name))
+  factory: StreamFactory
+
+  addStream(...names: String[]) {
+    names.map(name => {
+      this.streams.set(name, this.factory.createStream(name))
+    })
+    this.mergeAll()
   }
 
-  remove(name) {
-    this.streamer.remove(name)
+  mergeAll() {
+    for (let stream of this.streams.values())
+      stream.subscribe(this.stream)
   }
 
-  subscribe(observer: any) {
+  removeStream(...names) {
+    names.map(name => {
+      this.streams.delete(name)
+    })
+    this.mergeAll()
+  }
+
+  removeAll() {
+    for (let stream of this.streams.values()) {
+      stream.unsubscribeAll()
+    }
+    this.streams.clear()
+  }
+
+  subscribe(observer: any, name?: String) {
+    return name ? this.streams.get(name).subscribe(observer) : this.stream.subscribe(observer)
   }
 }
 
 
 export class Input extends GateWay {
-  streamer: Streamer
-
   constructor() {
     super()
   }
