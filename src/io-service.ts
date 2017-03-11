@@ -5,15 +5,15 @@ import { Adapter, Plug } from './connector'
 
 
 export class IOService extends StreamService {
-  protected input: Input
-  protected output: Output
+  public input: Input
+  public output: Output
 
-  protected adapters: Map<String, Adapter>
+  protected adapters: Map<String, IOService>
   protected plug: Plug
 
   // TODO: inject input and output
-  constructor() {
-    super()
+  constructor(name: String) {
+    super(name)
     console.log('IO service')
   }
 

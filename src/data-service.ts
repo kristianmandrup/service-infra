@@ -5,21 +5,14 @@ import { Stream } from './stream'
 
 @injectable()
 export class DataService extends Service {
-  // on Input
-  // updates: Stream
-
-  // on Output
-  // updated: Stream
-  // errors: Stream
-
-  constructor() {
-    super()
+  constructor(name: String) {
+    super(name)
     this.configure()
   }
 
   configure() {
     this.input.subscribe(this)
-    this.input.add('updates')
-    this.output.add('updated', 'errors')
+    this.input.addStream('updates')
+    this.output.addStream('updated', 'errors')
   }
 }

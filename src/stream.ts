@@ -8,7 +8,6 @@ export class Stream {
   protected subscriptions: Map<String, Subscription>
   public name: String
 
-
   constructor(name: String) {
     this.name = name
     this.source = new Subject()
@@ -29,7 +28,7 @@ export class Stream {
   }
 
   emit(event: Object) {
-    this.source.next(1)
+    this.source.next(event)
   }
 }
 
