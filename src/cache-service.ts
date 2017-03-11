@@ -1,6 +1,6 @@
-import { Service } from './service'
+import { StoreService } from './store-service'
 
-export class CacheService extends Service {
+export class CacheService extends StoreService {
   constructor() {
     super()
   }
