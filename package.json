@@ -1,0 +1,31 @@
+{
+  "name": "service-infra",
+  "version": "1.0.0",
+  "description": "Stream/Event based Service Infrastructure",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kristianmandrup/service-infra.git"
+  },
+  "keywords": [
+    "services",
+    "infrastructure",
+    "events"
+  ],
+  "author": "Kristian Mandrup",
+  "license": "ISC",
+  "dependencies": {
+    "inversify": "^3.1.0",
+    "inversify-devtools": "^1.0.0",
+    "rxjs": "^5.2.0"
+  },
+  "devDependencies": {
+    "ava": "^0.18.2",
+    "harmony-proxy": "^1.0.1",
+    "inversify-dts": "^3.0.0",
+    "reflect-metadata": "^0.1.10"
+  }
+}
