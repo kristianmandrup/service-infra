@@ -5,6 +5,9 @@ class ApiConnection {
   }
 }
 
+/*
+ * Communicates with external systems
+**/
 class ApiService extends Service {
   private connection: ApiConnection
 

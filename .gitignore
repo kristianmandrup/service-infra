@@ -3,3 +3,4 @@ node_modules
 .vscode
 *.1.js
 *.2.js
+*.map

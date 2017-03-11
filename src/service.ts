@@ -7,8 +7,6 @@ class Connector {
 
 @injectable()
 export class Service extends IOService {
-  private connector: Connector
-
   constructor() {
     super()
     console.log('service')
