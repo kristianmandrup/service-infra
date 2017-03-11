@@ -4,12 +4,11 @@ import { Adapter, Connector } from './connector'
 export class StreamService {
   protected stream: Stream
   protected connector: Connector
+  protected name: String
 
-  // list of adapters? named adapters in a Set?
-  private adapters: Adapter[]
-
-  constructor() {
-    this.configure()
+  constructor(name: String, opts?: Object) {
+    this.name = name
+    this.configure(opts)
   }
 
   emit(event: any) {
@@ -20,7 +19,7 @@ export class StreamService {
     this.stream.subscribe(subscriber)
   }
 
-  configure() {
+  configure(opts?: Object) {
     this.connector.connect(this)
   }
 }

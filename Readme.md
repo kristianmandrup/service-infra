@@ -9,11 +9,15 @@ The design is based on best practice concepts from Micro Services infrastructure
 ### Services
 This library makes the following Services are available:
 - `StreamService` (`Stream` wrapper)
-- IOService (`StreamService` with `Input` and `Output`)
-- Service (`IOService`)
-- DataService (`IOService` for handling data)
-- APIService (`IOService` for interacting with `Connection`s to external event sources)
-- LogService (`StoreService` event logger)
+- `IOService` (`StreamService` with `Input` and `Output`)
+- `Service` (`IOService`)
+- `DataService` (`IOService` for handling data)
+- `CacheService`
+- `APIService` (`IOService` for interacting with `Connection`s to external event sources)
+- `LogService` (`StoreService` event logger)
+- `ManagerService` (used to manage the infrastructure)
+
+`ServiceRegistry` where services are registered and can be looked up.
 
 Any sink (consumer) plugged into a `Service` and react on events as it sees fit.
 A `Component` can and be plugged into a `Service` which is then considered a `ComponentService`.

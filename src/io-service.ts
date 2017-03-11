@@ -8,6 +8,7 @@ export class IOService extends StreamService {
   protected input: Input
   protected output: Output
 
+  protected adapters: Map<String, Adapter>
   protected plug: Plug
 
   // TODO: inject input and output
@@ -17,5 +18,10 @@ export class IOService extends StreamService {
   }
 
   plugin(service: IOService) {
+    this.adapters.set(service.name, service)
+  }
+
+  unplug(name) {
+    this.adapters.delete(name)
   }
 }
