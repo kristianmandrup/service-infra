@@ -13,8 +13,10 @@ export class Stream {
     this.source = new Subject()
   }
 
-  subscribe(subscriber: any) {
-    this.subscriptions.set(subscriber.name, this.source.subscribe(subscriber))
+  subscribe(subscriber: any): Subscription {
+    const subscription = this.source.subscribe(subscriber)
+    this.subscriptions.set(subscriber.name, subscription)
+    return subscription
   }
 
   unsubscribe(name: String) {

@@ -14,7 +14,13 @@ export class IOService extends StreamService {
   // TODO: inject input and output
   constructor(name: String) {
     super(name)
+    this.configure()
     console.log('IO service')
+  }
+
+  configure() {
+    this.input = new Input()
+    this.output = new Output()
   }
 
   plugin(service: IOService) {

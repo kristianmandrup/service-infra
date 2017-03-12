@@ -1,8 +1,10 @@
-import { Stream } from './stream'
 import { Adapter, Connector } from './connector'
+import { Subscription } from '@reactivex/rxjs'
+
 
 export class StreamService {
-  protected stream: Stream
+  // Controls internal service stream
+  // Internal services can connect here to subscribe/emit events
   protected connector: Connector
   protected name: String
 
@@ -12,12 +14,17 @@ export class StreamService {
   }
 
   emit(event: any) {
-    this.stream.emit(event)
+    this.connector.emit(event)
   }
 
-  subscribe(subscriber) {
-    this.stream.subscribe(subscriber)
+  subscribe(subscriber): Subscription {
+    return this.connector.subscribe(subscriber)
   }
+
+  unsubscribe(subscriber) {
+    this.connector.unsubscribe(subscriber)
+  }
+
 
   configure(opts?: Object) {
     this.connector.connect(this)

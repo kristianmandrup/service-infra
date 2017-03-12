@@ -2,7 +2,7 @@ import { Stream, StreamFactory } from './stream'
 
 export class GateWay {
   protected streams: Map<String, Stream> // TODO: should be Interface
-  protected stream: Stream
+  public stream: Stream
 
   factory: StreamFactory
 
