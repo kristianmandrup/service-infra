@@ -1,14 +1,15 @@
-import { Adapter, Connector } from './connector'
+import { Service } from './service'
+import { Connector } from './connector'
 import { Subscription } from '@reactivex/rxjs'
+import { IConnectable } from './connector'
 
-
-export class StreamService {
+export class StreamService implements IConnectable {
   // Controls internal service stream
   // Internal services can connect here to subscribe/emit events
   protected connector: Connector
-  protected name: String
+  name: string
 
-  constructor(name: String, opts?: Object) {
+  constructor(name: string, opts?: Object) {
     this.name = name
     this.configure(opts)
   }
@@ -25,6 +26,9 @@ export class StreamService {
     this.connector.unsubscribe(subscriber)
   }
 
+  connect(service: Service) {
+    this.connector.connect(service)
+  }
 
   configure(opts?: Object) {
     this.connector.connect(this)

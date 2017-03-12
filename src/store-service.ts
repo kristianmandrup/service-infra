@@ -13,7 +13,7 @@ export class StoreService extends Service {
   private storage: Storage // TODO: interface
   private query: Query
 
-  constructor() {
-    super()
+  constructor(name: string) {
+    super(name)
   }
 }

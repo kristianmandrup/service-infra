@@ -1,12 +1,14 @@
 import { Stream, StreamFactory } from './stream'
 
 export class GateWay {
-  protected streams: Map<String, Stream> // TODO: should be Interface
+  protected streams: Map<string, Stream> // TODO: should be Interface
   public stream: Stream
+  protected factory: StreamFactory
 
-  factory: StreamFactory
+  constructor() {
+  }
 
-  addStream(...names: String[]) {
+  addStream(...names: string[]) {
     names.map(name => {
       this.streams.set(name, this.factory.createStream(name))
     })
@@ -32,7 +34,7 @@ export class GateWay {
     this.streams.clear()
   }
 
-  subscribe(observer: any, name?: String) {
+  subscribe(observer: any, name?: string) {
     return name ? this.streams.get(name).subscribe(observer) : this.stream.subscribe(observer)
   }
 

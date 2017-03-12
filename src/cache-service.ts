@@ -7,7 +7,7 @@ export class CacheService extends StoreService {
 
   configure() {
     this.input.subscribe(this)
-    this.input.add('requests')
-    this.output.add('miss', 'hit')
+    this.input.addStream('requests')
+    this.output.addStream('miss', 'hit')
   }
 }

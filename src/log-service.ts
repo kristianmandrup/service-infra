@@ -1,7 +1,7 @@
 import { StoreService } from './store-service'
 
 export class LogService extends StoreService {
-  constructor() {
-    super()
+  constructor(name: string) {
+    super(name)
   }
 }

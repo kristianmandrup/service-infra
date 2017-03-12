@@ -1,7 +1,7 @@
 import { Service } from './service'
 
 export class QueryService extends Service {
-  constructor() {
-    super()
+  constructor(name: string) {
+    super(name)
   }
 }
