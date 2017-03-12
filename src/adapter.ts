@@ -1,3 +1,4 @@
+import { Service } from './service'
 import { Plug } from './plug'
 
 class Slot {
@@ -10,17 +11,25 @@ class Slot {
 export class Adapter {
   protected sockets: Map<string, Plug>
   protected types: string[]
+  protected name: string
+  protected service: Service
 
-  constructor(name: string) {
-    this.types = types
+  constructor(name: string, service: Service) {
+    this.name = name
+    this.service = service
+    this.sockets = new Map()
   }
 
   comfigureSockets(...types: string[]) {
     this.types = types
   }
 
-  plugFits(plug: Plug): Slot {
-    return this.sockets.get(plug.type)
+  plugFits(plug: Plug): any {
+    try {
+      return this.sockets.get(plug.type)
+    } catch (e) {
+      return false
+    }
   }
 
   protected inject(plug: Plug) {
