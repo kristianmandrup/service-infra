@@ -26,8 +26,9 @@ export class Adapter {
 
   plugFits(plug: Plug): any {
     try {
-      return this.sockets.get(plug.type)
+      if (this.types.indexOf(plug.type) >= 0) return true
     } catch (e) {
+      // console.log(e)
       return false
     }
   }
@@ -43,6 +44,7 @@ export class Adapter {
   protected pluginOne(plug: Plug): boolean {
     if (!this.plugFits(plug)) return false
     this.inject(plug)
+    return true
   }
 
   protected unplugOne(plug: Plug): boolean {
@@ -50,7 +52,9 @@ export class Adapter {
   }
 
   plugin(...plugs: Plug[]): boolean {
-    return plugs.every(plug => this.pluginOne(plug))
+    return plugs.every(plug => {
+      return this.pluginOne(plug)
+    })
   }
 
   unplug(...plugs: Plug[]) {
