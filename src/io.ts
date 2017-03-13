@@ -3,12 +3,10 @@ import { Stream, IStreamFactory, StreamFactory } from './stream'
 export class GateWay {
   protected streamsMap: Map<string, Stream> // TODO: should be Interface
   public stream: Stream
-  protected factory: IStreamFactory
 
-  constructor(streamNames, factory?: IStreamFactory) {
+  constructor(...streamNames: string[]) {
     this.streamsMap = new Map()
-    this.factory = factory || new StreamFactory()
-    this.addStream(streamNames)
+    this.addStream(...streamNames)
   }
 
   get streams(): Stream[] {
@@ -29,7 +27,7 @@ export class GateWay {
 
   addStream(...names: string[]) {
     names.map(name => {
-      this.setStream(name, this.factory.createStream(name))
+      this.setStream(name, this.stream.factory.createStream(name))
     })
     this.mergeAll()
   }
@@ -74,13 +72,13 @@ export class GateWay {
 
 
 export class Input extends GateWay {
-  constructor() {
-    super()
+  constructor(...streams) {
+    super(...streams)
   }
 }
 
 export class Output extends GateWay {
-  constructor() {
-    super()
+  constructor(...streams) {
+    super(...streams)
   }
 }
