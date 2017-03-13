@@ -7,11 +7,15 @@ export interface IConnectable {
 }
 
 export class Connector {
-  protected stream: Stream
+  protected _stream: Stream
   protected connected: Map<String, IConnectable>
 
   constructor(name) {
-    this.stream = new Stream(name)
+    this._stream = new Stream(name)
+  }
+
+  get stream() {
+    return this.stream
   }
 
   emit(event: any) {
@@ -26,6 +30,9 @@ export class Connector {
     this.stream.unsubscribe(subscriber)
   }
 
+  // TODO: connect by concat of streams or
+  // some other way ensuring that events from each source
+  // stream flows into connected target stream
   connect(...connectables: IConnectable[]) {
     connectables.map(connectable => {
       this.connected.set(connectable.name, connectable)

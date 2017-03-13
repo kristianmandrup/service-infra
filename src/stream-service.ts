@@ -14,6 +14,10 @@ export class StreamService implements IConnectable {
     this.configure(opts)
   }
 
+  get stream() {
+    return this.connector.stream
+  }
+
   emit(event: any) {
     this.connector.emit(event)
   }
