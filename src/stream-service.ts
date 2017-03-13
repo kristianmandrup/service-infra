@@ -34,6 +34,10 @@ export class StreamService implements IConnectable {
     this.connector.connect(service)
   }
 
+  connectAll(...services: Service[]) {
+    services.map(service => this.connect(service))
+  }
+
   configure(opts?: Object) {
     this.connector.connect(this)
   }

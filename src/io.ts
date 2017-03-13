@@ -1,5 +1,10 @@
 import { Stream, IStreamFactory, StreamFactory } from './stream'
 
+export interface IOConfig {
+  input: string,
+  output: string
+}
+
 export class GateWay {
   protected streamsMap: Map<string, Stream> // TODO: should be Interface
   public stream: Stream
@@ -18,7 +23,7 @@ export class GateWay {
   }
 
   hasNamedStream(name: string) {
-    return this.streamNames.indexOf(name) >= 0
+    return this.streamNames.includes(name)
   }
 
   streamsMatch(gateway: GateWay) {

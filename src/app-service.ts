@@ -1,4 +1,5 @@
 import { Service } from './service'
+import { IOConfig } from './io'
 import { IConnectable } from './connector'
 
 /*
@@ -11,8 +12,7 @@ export class AppService extends Service {
     return this.stream
   }
 
-  constructor(name: string, ...connectables: IConnectable[]) {
-    super(name)
-    this.connector.connect(...connectables)
+  constructor(name: string, io: IOConfig) {
+    super(name, io)
   }
 }

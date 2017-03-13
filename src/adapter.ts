@@ -44,7 +44,7 @@ export class Adapter extends Adaptable {
   }
 
   isPluggedIn(type) {
-    return Array.from(this.sockets.keys()).indexOf(type) >= 0
+    return Array.from(this.sockets.keys()).includes(type)
   }
 
   streamsMatch(plug: Plug): boolean {
@@ -59,7 +59,7 @@ export class Adapter extends Adaptable {
   // also when we plug a service into another, the matching streams must be connected
   plugFits(plug: Plug): boolean {
     try {
-      if (this.types.indexOf(plug.type) >= 0) {
+      if (this.types.includes(plug.type)) {
         return this.streamsMatch(plug)
       }
     } catch (e) {
