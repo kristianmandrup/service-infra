@@ -34,7 +34,11 @@ export class Stream {
   }
 }
 
-export class StreamFactory {
+export interface IStreamFactory {
+  createStream: Function
+}
+
+export class StreamFactory implements IStreamFactory {
   createStream(name): Stream {
     return new Stream(name)
   }

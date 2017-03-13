@@ -12,7 +12,7 @@ export class IOService extends StreamService {
   protected plug: Plug
 
   // TODO: inject input and output
-  constructor(name: String) {
+  constructor(name: string) {
     super(name)
     this.configure()
     console.log('IO service')

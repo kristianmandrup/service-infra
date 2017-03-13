@@ -1,8 +1,8 @@
 import { StoreService } from './store-service'
 
 export class CacheService extends StoreService {
-  constructor() {
-    super()
+  constructor(name: String) {
+    super(name)
   }
 
   configure() {

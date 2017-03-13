@@ -5,9 +5,9 @@ import { Plug } from './plug'
 
 const service = new Service('a')
 const adapter = new Adapter('x', service)
-adapter.comfigureSockets('a', 'b')
-const badPlug = new Plug('_')
-const goodPlug = new Plug('b')
+adapter.configSockets('a', 'b')
+const badPlug = new Plug('_', service)
+const goodPlug = new Plug('b', service)
 
 test('new Adapter', t => {
   t.is(adapter.constructor, Adapter)
@@ -38,6 +38,6 @@ test('plugin a bad Plug fails', t => {
 })
 
 test('plugin a Plug in matching socket works', t => {
-  const res = adapter.plugin(goodPlug)
-  t.truthy(res)
+  t.truthy(adapter.plugin(goodPlug))
+  t.falsy(adapter.plugs === badAdapter)
 })

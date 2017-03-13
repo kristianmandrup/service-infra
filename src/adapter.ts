@@ -20,9 +20,18 @@ export class Adapter {
     this.sockets = new Map()
   }
 
-  comfigureSockets(...types: string[]) {
+  configSockets(...types: string[]) {
     this.types = types
   }
+
+  pluggedIn() {
+    return this.sockets.keys()
+  }
+
+  isPluggedIn(type) {
+    return Array.from(this.sockets.keys()).indexOf(type) >= 0
+  }
+
 
   plugFits(plug: Plug): any {
     try {
