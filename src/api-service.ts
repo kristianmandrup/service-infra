@@ -15,16 +15,15 @@ class SocketConnection extends Connection {
   }
 }
 
-
 /*
  * Communicates with external systems
  * Kind of IO service
 **/
-class ApiService extends Service {
+export class ApiService extends Service {
   private connection: Connection
 
-  constructor() {
-    super()
+  constructor(name: string) {
+    super(name)
     this.connection.connect()
   }
 }

@@ -9,20 +9,20 @@ test('new', t => {
 test('Input.getStream no such stream', t => {
   const input = new Input()
 
-  t.falsy(input.getStream('updated'))
+  t.falsy(input.findStream('updated'))
 })
 
 test('Input.addStream', t => {
   const input = new Input()
   const name = 'my-stream'
   input.addStream(name)
-  t.truthy(input.getStream(name))
+  t.truthy(input.findStream(name))
 })
 
 test('Output.getStream no such stream', t => {
   const output = new Output()
 
-  t.falsy(output.getStream('updated'))
+  t.falsy(output.findStream('updated'))
 })
 
 test('Output.addStream', t => {
@@ -31,7 +31,7 @@ test('Output.addStream', t => {
 
   const name = 'my-stream'
   output.addStream(name)
-  t.truthy(output.getStream(name))
+  t.truthy(output.findStream(name))
 })
 
 test('Output.removeStream no such stream', t => {
@@ -44,7 +44,7 @@ test('Output.removeStream find stream', t => {
   const name = 'my-stream'
   output.addStream(name)
   output.removeStream('updated')
-  t.falsy(output.getStream(name))
+  t.falsy(output.findStream(name))
 })
 
 test('Output.removeAll no such stream', t => {
@@ -56,7 +56,7 @@ test('Output.removeAll with streams', t => {
   const output = new Output()
   output.addStream('x', 'y')
 
-  t.falsy(output.getStream('x'))
-  t.falsy(output.getStream('y'))
+  t.falsy(output.findStream('x'))
+  t.falsy(output.findStream('y'))
 })
 

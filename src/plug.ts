@@ -1,17 +1,25 @@
 import { Service } from './service'
-import { Adapter } from './adapter'
+import { Adapter, Adaptable } from './adapter'
 
 // used to plug in a service and connect the two IO streams in each direction:
 // I->O
 // O->I
-export class Plug {
-  public type: string
-  public inAdapter: Adapter
-  protected service: Service
+export class Plug extends Adaptable {
+  protected _type: string
+  protected _adapter: Adapter
+  protected _service: Service
 
   constructor(type: string, service: Service) {
-    this.type = type
-    this.service = service
+    super(service)
+    this._type = type
+  }
+
+  get inAdapter() {
+    return this._adapter
+  }
+
+  get type() {
+    return this._type
   }
 
   plugsInto(adapter: Adapter): boolean {
@@ -26,7 +34,7 @@ export class Plug {
     try {
       const result = adapter.plugin(this)
       if (result) {
-        this.inAdapter = adapter
+        this._adapter = adapter
       }
       return result
     } catch (e) {

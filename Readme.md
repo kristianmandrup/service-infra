@@ -41,12 +41,31 @@ user actions etc. The actions are converted into `Event`s and emitted on the ser
 An `Event` must always have a unique ID and a `createdAt` timestamp for tracking purposes.
 
 ### Plug and Play
-The services are designed to be Plug and Play, ie. easy to compose together. Any service has a set of Adapters (slots) and a plug. A service can be plugged into one service Adapter. When two services are plugged, the Output stream of each service is streamed into the Input stream of the other service.
+The services are designed to be *plug and play*, ie. easy to compose together. Any service has a set of `Adapter`s (slots) and a `Plug`. A `Service` can be plugged into another service by plugging in one of its plugs into a suitable `Adapter` of the target service. When two services are plugged, the `Output` stream of each service is streamed into the `Input` stream of the other service.
 
-A ComponentService can only be plugged into the App service.
+A `ComponentService` can only be plugged into the `App` service. This ensures that the component stream of each service flows into the App stream which can then log all stream activity of the system (essentially like a backbone stream of events).
 
-### Gate
-A `Gate` (similar to a [logic gate](https://en.wikipedia.org/wiki/Logic_gate) in electronics) controls how two or more streams are merged into one.
+## Connecting Service I/O streams
+
+The the plug/adapter is used to connect one service into another. It is really about
+connecting matching I/O streams. Perhaps no real use for the `types` list (except as a convenience?)
+when we plug a service into another, the streams must be match and then be connected!
+
+This is achieved by `streamsMatch` in `Adapter`
+
+```js
+  return this.input.streamsMatch(plug.output) && plug.input.streamsMatch(this.output)
+```
+
+Which uses `streamsMatch(gateway: GateWay)` in the `Gateway` base class for `Input` and `Output`, which compares the names of available streams of each of the I/O gateways.
+
+## API Services
+
+The `APIService`s can be thought of like sensors of an animal (or robot). They are the gateways to the external world.
+
+## Log service
+
+The Log service stores all events flowing through the backbone stream (main `App` service stream). These can then be tracked and played back to achieve the same state. The log can be thought of as a memory across time.
 
 ## Other stream based frameworks of interest
 [NinjaGoat MVVM framework](https://github.com/tierratelematics/ninjagoat/wiki/Getting-started)

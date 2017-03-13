@@ -5,13 +5,26 @@ export class GateWay {
   public stream: Stream
   protected factory: IStreamFactory
 
-  constructor(factory?: IStreamFactory) {
+  constructor(streamNames, factory?: IStreamFactory) {
     this.streamsMap = new Map()
     this.factory = factory || new StreamFactory()
+    this.addStream(streamNames)
   }
 
   get streams(): Stream[] {
-    return Array.from(this.streams.values())
+    return Array.from(this.streamsMap.values())
+  }
+
+  get streamNames(): string[] {
+    return Array.from(this.streamsMap.keys())
+  }
+
+  hasNamedStream(name: string) {
+    return this.streamNames.indexOf(name) >= 0
+  }
+
+  streamsMatch(gateway: GateWay) {
+    return gateway.streamNames.every(name => this.hasNamedStream(name))
   }
 
   addStream(...names: string[]) {
