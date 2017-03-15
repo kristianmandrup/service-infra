@@ -1,4 +1,5 @@
-import { Subject, Observable, Subscription } from '@reactivex/rxjs'
+import { Subject, Observable, Subscription, Subscriber } from '@reactivex/rxjs'
+import { Event } from './event'
 
 export interface IStreamFactory {
   createStream: Function
@@ -11,39 +12,38 @@ export class StreamFactory implements IStreamFactory {
 }
 
 
-export interface ISubscriber {
-  name: string
-}
-
 /*
  * Abstracted Stream, such as Observable
 **/
 export class Stream {
-  protected source: Observable<ISubscriber>
+  protected source: Observable<Event>
   protected subscriptions: Map<String, Subscription>
   public name: String
   public static factory = new StreamFactory()
 
   constructor(name: String) {
     this.name = name
-    this.source = new Subject()
+    this.source = Observable.create(event => event) // ie. the next() method
   }
 
   get factory() {
     return Stream.factory
   }
 
-  subscribeOne(subscriber: any): Subscription {
-    if (!subscriber.name) {
+  // todo: allow name/function or object key/value?
+  subscribeOne(name, subscriber: Subscriber<Event>): Subscription {
+    if (!subscriber) {
       throw 'Subscriber must have a name'
     }
     const subscription = this.source.subscribe(subscriber)
-    this.subscriptions.set(subscriber.name, subscription)
+    this.subscriptions.set(name, subscriber)
     return subscription
   }
 
-  subscribe(...subscribers: any[]): Subscription[] {
-    return subscribers.map(subscriber => this.subscribeOne(subscriber))
+  subscribe(subscribers: Map<String, Subscriber<Event>>) {
+    subscribers.forEach((subscriber, name) => {
+      this.subscribeOne(name, subscriber)
+    })
   }
 
   unsubscribe(name: String) {
@@ -56,7 +56,10 @@ export class Stream {
     }
   }
 
-  emit(event: Object) {
-    this.source.next(event)
+  // TODO: fix this!!
+  emit(event: Event) {
+    this.source.forEach(event => {
+      return event
+    })
   }
 }

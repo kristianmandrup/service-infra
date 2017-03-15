@@ -4,22 +4,8 @@ import { Stream } from './stream'
 import { Connector } from './connector'
 import { Subject, Subscription, Subscriber } from '@reactivex/rxjs'
 
-const badSubscriber = (x) => {
+const subscriber = (x) => {
   console.log(x)
-}
-
-const namedSubscriber = {
-  name: 'a',
-  cb: (x) => {
-    console.log(x)
-  }
-}
-
-const otherSubscriber = {
-  name: 'b',
-  cb: (x) => {
-    console.log(x)
-  }
 }
 
 test('new', t => {
@@ -27,10 +13,10 @@ test('new', t => {
   t.is(stream.constructor, Stream)
 })
 
-test('subscribe - no name', t => {
+test('subscribeOne - no name', t => {
   const stream = new Stream('x')
   // error since no name
-  stream.subscribe(badSubscriber)
+  stream.subscribeOne(null, badSubscriber)
 })
 
 test('subscribe - subscriber with name', t => {
@@ -39,7 +25,7 @@ test('subscribe - subscriber with name', t => {
     console.log(x)
   }
   // good subscriber with name
-  stream.subscribe(namedSubscriber)
+  stream.subscribe(new Map({ a: subscriber }))
 })
 
 
