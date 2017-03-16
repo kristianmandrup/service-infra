@@ -86,7 +86,7 @@ test('unsubscribeAll - one', t => {
 })
 
 
-test('unsubscribeAll - multiple', t => {
+test('unsubscribeAll - two', t => {
   const stream = new Stream('x', eventGenerator)
 
   const subscribers = {

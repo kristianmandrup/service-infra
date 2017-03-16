@@ -28,6 +28,7 @@ export class Stream {
   constructor(name: string, eventSource: Observable<Event>) {
     this._name = name
     this._source = eventSource
+    this.subscriptions = new Map()
   }
 
   get name() {
@@ -73,8 +74,13 @@ export class Stream {
     throw `Invalid subscribers #{type}`
   }
 
+  subscription(name: string) {
+    return this.subscriptions.get(name)
+  }
+
   unsubscribe(name: string) {
-    this.subscriptions.get(name).unsubscribe()
+    const subscription = this.subscription(name)
+    return subscription ? subscription.unsubscribe() : false
   }
 
   unsubscribeAll() {
