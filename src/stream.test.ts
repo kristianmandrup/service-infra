@@ -4,24 +4,16 @@ import { Connector } from './connector'
 import { Event } from './event'
 import { Observable, Subject, Subscription, Subscriber } from '@reactivex/rxjs'
 
-// var subscriber = Subscriber.create(function (value) {
-//     if (value === 2) {
-//         throw 'error!';
-//     }
-// }, errorSpy, completeSpy);
-// subscriber.next(1);
-
-
 function testSubscriber(t) {
   return Subscriber.create((event: any) => {
-    console.log('event', event.msg)
-    t.is(event.msg.type, 'count')
+    console.log('event', event)
+    t.is(event.type, 'count')
   })
 }
 
 const eventGenerator = Observable.range(1, 2).map(index => {
   console.log('new event', index)
-  return new Event('counter', { type: 'count', number: index })
+  return new Event('counter', { type: 'count', number: index }).msg
 })
 
 test('new', t => {
@@ -40,7 +32,6 @@ test('subscribeOne - valid name', async t => {
 
   // good subscriber with name
   stream.subscribeOne('a', testSubscriber(t))
-  // subscriber.next()
 })
 
 test('subscribe - Object', t => {

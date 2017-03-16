@@ -1,5 +1,5 @@
 import { Subject, Observable, Subscription, Subscriber } from '@reactivex/rxjs'
-import { Event } from './event'
+import { IEvent } from './event'
 
 export interface IStreamFactory {
   createStream: Function
@@ -20,12 +20,12 @@ function* entries(obj) {
  * Abstracted Stream, such as Observable
 **/
 export class Stream {
-  protected _source: Observable<Event>
+  protected _source: Observable<IEvent>
   protected subscriptions: Map<string, Subscription>
   protected _name: string
   public static factory = new StreamFactory()
 
-  constructor(name: string, eventSource: Observable<Event>) {
+  constructor(name: string, eventSource: Observable<IEvent>) {
     this._name = name
     this._source = eventSource
     this.subscriptions = new Map()
@@ -44,7 +44,7 @@ export class Stream {
   }
 
   // todo: allow name/function or object key/value?
-  subscribeOne(name, subscriber: Subscriber<Event>): Subscription {
+  subscribeOne(name, subscriber: Subscriber<IEvent>): Subscription {
     if (!subscriber) {
       throw 'Subscriber must have a name'
     }
@@ -60,7 +60,7 @@ export class Stream {
     }
   }
 
-  protected subscribeMap(subscribers: Map<string, Subscriber<Event>>): void {
+  protected subscribeMap(subscribers: Map<string, Subscriber<IEvent>>): void {
     subscribers.forEach((subscriber, name) => {
       this.subscribeOne(name, subscriber)
     })
@@ -87,12 +87,5 @@ export class Stream {
     for (let key of this.subscriptions.keys()) {
       this.unsubscribe(key)
     }
-  }
-
-  // TODO: fix this!!
-  emit(event: Event) {
-    this.source.forEach(event => {
-      return event
-    })
   }
 }

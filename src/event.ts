@@ -16,13 +16,19 @@ class EventIdFactory {
 }
 
 export class Event {
-  protected msg: IEvent
-  protected idFactory: EventIdFactory
+  protected _msg: IEvent
+  static idFactory: EventIdFactory
+
+  get idFactory() {
+    return Event.idFactory || new EventIdFactory()
+  }
+
+  get msg() {
+    return this._msg
+  }
 
   constructor(name: string, opts = {}) {
-    this.idFactory = new EventIdFactory()
-
-    this.msg = Object.assign({
+    this._msg = Object.assign({
       id: this.idFactory.create(),
       createdAt: new Date(),
       name: name
