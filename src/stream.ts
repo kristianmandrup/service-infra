@@ -6,24 +6,36 @@ export interface IStreamFactory {
 }
 
 export class StreamFactory implements IStreamFactory {
-  public createStream(name): Stream {
-    return new Stream(name)
+  public createStream(name: string, eventSource: Observable<Event>): Stream {
+    return new Stream(name, eventSource)
   }
 }
 
+function* entries(obj) {
+  for (let key in obj)
+    yield [key, obj[key]];
+}
 
 /*
  * Abstracted Stream, such as Observable
 **/
 export class Stream {
-  protected source: Observable<Event>
-  protected subscriptions: Map<String, Subscription>
-  public name: String
+  protected _source: Observable<Event>
+  protected subscriptions: Map<string, Subscription>
+  protected _name: string
   public static factory = new StreamFactory()
 
-  constructor(name: String) {
-    this.name = name
-    this.source = Observable.create(event => event) // ie. the next() method
+  constructor(name: string, eventSource: Observable<Event>) {
+    this._name = name
+    this._source = eventSource
+  }
+
+  get name() {
+    return this._name
+  }
+
+  get source() {
+    return this._source
   }
 
   get factory() {
@@ -40,13 +52,28 @@ export class Stream {
     return subscription
   }
 
-  subscribe(subscribers: Map<String, Subscriber<Event>>) {
+  protected subscribeObj(subscribers: Object): void {
+    for (let name in subscribers) {
+      let subscriber = subscribers[name]
+      this.subscribeOne(name, subscriber)
+    }
+  }
+
+  protected subscribeMap(subscribers: Map<string, Subscriber<Event>>): void {
     subscribers.forEach((subscriber, name) => {
       this.subscribeOne(name, subscriber)
     })
   }
 
-  unsubscribe(name: String) {
+  subscribe(subscribers: any): void {
+    if (subscribers instanceof Map)
+      return this.subscribeMap(subscribers)
+    if (subscribers instanceof Object)
+      return this.subscribeObj(subscribers)
+    throw `Invalid subscribers #{type}`
+  }
+
+  unsubscribe(name: string) {
     this.subscriptions.get(name).unsubscribe()
   }
 
