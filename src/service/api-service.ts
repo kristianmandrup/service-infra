@@ -18,6 +18,8 @@ class SocketConnection extends Connection {
 /*
  * Communicates with external systems
  * Kind of IO service
+ *
+ * TODO: use AsyncStream
 **/
 export class ApiService extends Service {
   private connection: Connection

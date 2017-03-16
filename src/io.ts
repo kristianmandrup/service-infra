@@ -1,4 +1,6 @@
 import { Stream, IStreamFactory, StreamFactory } from './stream'
+import { Observer, Subject, Observable, Subscription, Subscriber } from '@reactivex/rxjs'
+import { IEvent, Event } from './event'
 
 export interface IOConfig {
   input: string,
@@ -53,8 +55,9 @@ export class GateWay {
     this.streamsMap.clear()
   }
 
-  subscribe(observer: any, name?: string) {
-    return name ? this.findStream(name).subscribe(observer) : this.stream.subscribe(observer)
+  subscribe(subscriber: Subscriber<IEvent>, name?: string) {
+    const stream = name ? this.findStream(name) : this.stream
+    return stream.subscribe(subscriber)
   }
 
   setStream(name: string, stream: Stream) {
@@ -64,7 +67,6 @@ export class GateWay {
   deleteStream(name: string) {
     this.streamsMap.delete(name)
   }
-
 
   findStream(name) {
     return this.streamsMap.get(name)

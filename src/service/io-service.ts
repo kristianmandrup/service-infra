@@ -1,8 +1,8 @@
 import { Container, injectable, inject } from 'inversify'
 import { StreamService } from './stream-service'
-import { Input, Output, IOConfig } from './io'
-import { Adapter } from './adapter'
-import { Plug } from './plug'
+import { Input, Output, IOConfig } from '../io'
+import { Adapter } from '../adapter'
+import { Plug } from '../plug'
 
 export class IOService extends StreamService {
   // TODO: perhaps input/output could just be adapter/plug as well?
@@ -14,7 +14,7 @@ export class IOService extends StreamService {
   protected plugs: Map<String, Plug>
 
   // TODO: inject input and output
-  constructor(name: string, io: IOConfig) {
+  constructor(name: string, io?: IOConfig) {
     super(name)
     this.configure(io)
   }

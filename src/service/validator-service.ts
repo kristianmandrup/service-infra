@@ -1,6 +1,9 @@
 import { Service } from './service'
 import { Stream } from '../stream'
 import { IOConfig } from '../io'
+import { Observer, Subject, Observable, Subscription, Subscriber } from '@reactivex/rxjs'
+import { IEvent, Event } from '../event'
+
 
 export class ValidatorService extends Service {
   constructor(name = 'validator', io?: IOConfig) {
@@ -8,23 +11,25 @@ export class ValidatorService extends Service {
   }
 
   configure() {
-    this.input.subscribe(this)
     this.input.addStream('data')
     this.output.addStream('valid', 'invalid')
-
-    // this.input.subscribe('data', this.validate)
   }
 
   validate(data: Object): void {
     let valid = this.isValid(data)
-    // valid ? this.emit('valid', data, valid) : this.emit('invalid', data, valid)
+    valid ? this.emitResult('valid', data, valid) : this.emitResult('invalid', data, valid)
   }
 
   isValid(data: Object): boolean {
     return true
   }
 
-  // emit(name: String, data: Object, validity: boolean): void {
-  //   this.out.emit(name, { valid: validity, data })
-  // }
+  protected event(name: string, data: Object, valid: boolean): IEvent {
+    return new Event(name, { valid, data }).msg
+  }
+
+  emitResult(name: string, data: Object, valid: boolean): void {
+    const event = this.event(name, data, valid)
+    this.output.emit(name, event)
+  }
 }

@@ -1,11 +1,9 @@
 import { Service } from './service'
-import { Container, injectable, inject } from 'inversify'
-import { Adapter } from './connector'
-import { Stream } from './stream'
+// import { Container, injectable, inject } from 'inversify'
 
-@injectable()
+// @injectable()
 export class DataService extends Service {
-  constructor(name: String) {
+  constructor(name: string) {
     super(name)
     this.configure()
   }

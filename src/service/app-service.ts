@@ -12,7 +12,7 @@ export class AppService extends Service {
     return this.stream
   }
 
-  constructor(name: string, io: IOConfig) {
+  constructor(name: string, io?: IOConfig) {
     super(name, io)
   }
 }
