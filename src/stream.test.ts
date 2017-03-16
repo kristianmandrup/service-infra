@@ -14,12 +14,12 @@ import { Observable, Subject, Subscription, Subscriber } from '@reactivex/rxjs'
 
 function testSubscriber(t) {
   return Subscriber.create((event: any) => {
-    console.log('event', event)
-    t.is(event.type, 'count')
+    console.log('event', event.msg)
+    t.is(event.msg.type, 'count')
   })
 }
 
-const eventGenerator = Observable.interval(10).map(index => {
+const eventGenerator = Observable.range(1, 2).map(index => {
   console.log('new event', index)
   return new Event('counter', { type: 'count', number: index })
 })
