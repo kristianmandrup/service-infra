@@ -10,8 +10,12 @@ export class Connector {
   protected _stream: Stream
   protected connected: Map<String, IConnectable>
 
-  constructor(name) {
-    this._stream = new Stream(name)
+  constructor(name: string, observable) {
+    this._stream = new Stream(name, observable)
+  }
+
+  isConnected(name: string) {
+    return Array.from(this.connected.keys()).includes(name)
   }
 
   get stream() {

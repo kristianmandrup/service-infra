@@ -1,9 +1,10 @@
 import { Service } from './service'
-import { Stream } from './stream'
+import { Stream } from '../stream'
+import { IOConfig } from '../io'
 
 export class ValidatorService extends Service {
-  constructor(name: '') {
-    super('validator:' + name)
+  constructor(name = 'validator', io?: IOConfig) {
+    super('validator:' + name, io)
   }
 
   configure() {
@@ -16,14 +17,14 @@ export class ValidatorService extends Service {
 
   validate(data: Object): void {
     let valid = this.isValid(data)
-    valid ? this.emit('valid', data, valid) : this.emit('invalid', data, valid)
+    // valid ? this.emit('valid', data, valid) : this.emit('invalid', data, valid)
   }
 
   isValid(data: Object): boolean {
     return true
   }
 
-  emit(name: String, data: Object, validity: boolean): void {
-    this.out.emit(name, { valid: validity, data })
-  }
+  // emit(name: String, data: Object, validity: boolean): void {
+  //   this.out.emit(name, { valid: validity, data })
+  // }
 }

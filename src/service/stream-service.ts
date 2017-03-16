@@ -30,6 +30,10 @@ export class StreamService implements IConnectable {
     this.connector.unsubscribe(subscriber)
   }
 
+  isConnected(name: string) {
+    return this.connector.isConnected(name)
+  }
+
   connect(service: Service) {
     this.connector.connect(service)
   }
