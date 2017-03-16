@@ -95,6 +95,13 @@ In particular:
 
 [prettygoat Event Source Engine](https://github.com/tierratelematics/prettygoat)
 
+## Testing
+
+Use [Ava] with
+- [rx marbles](http://rxmarbles.com/)
+- [reactive testing](https://glebbahmutov.com/blog/testing-reactive-code/#testing-with-ava)
+- [rxjs-marble-diagram-tests](https://www.ericponto.com/blog/2017/01/08/rxjs-marble-diagram-tests-with-qunit/)
+
 ## DBs
 Store data in real DB, not just Objects!
 
