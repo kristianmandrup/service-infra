@@ -1,16 +1,27 @@
 import test from 'ava'
-import { StreamService } from './stream-service'
 import { Stream } from './stream'
 import { Connector } from './connector'
 import { Event } from './event'
 import { Observable, Subject, Subscription, Subscriber } from '@reactivex/rxjs'
 
-const subscriber: Subscriber<Event> = Subscriber.create((x: Event) => {
-  console.log('event', x)
-})
+// var subscriber = Subscriber.create(function (value) {
+//     if (value === 2) {
+//         throw 'error!';
+//     }
+// }, errorSpy, completeSpy);
+// subscriber.next(1);
 
-const eventGenerator = Observable.interval(500).map(index => {
-  return new Event({ type: 'counter', number: index })
+
+function testSubscriber(t) {
+  return Subscriber.create((event: any) => {
+    console.log('event', event)
+    t.is(event.type, 'count')
+  })
+}
+
+const eventGenerator = Observable.interval(10).map(index => {
+  console.log('new event', index)
+  return new Event('counter', { type: 'count', number: index })
 })
 
 test('new', t => {
@@ -18,25 +29,26 @@ test('new', t => {
   t.is(stream.constructor, Stream)
 })
 
-test('subscribeOne - invalid name', t => {
+test('subscribeOne - invalid name', async t => {
   const stream = new Stream('x', eventGenerator)
   // error since no name
-  stream.subscribeOne(null, subscriber)
+  stream.subscribeOne(null, testSubscriber(t))
 })
 
-test('subscribeOne - valid name', t => {
+test('subscribeOne - valid name', async t => {
   const stream = new Stream('x', eventGenerator)
 
   // good subscriber with name
-  stream.subscribeOne('a', subscriber)
+  stream.subscribeOne('a', testSubscriber(t))
+  // subscriber.next()
 })
 
 test('subscribe - Object', t => {
   const stream = new Stream('x', eventGenerator)
 
   const subscribers = {
-    a: subscriber,
-    b: subscriber
+    a: testSubscriber(t),
+    b: testSubscriber(t)
   }
 
   stream.subscribe(subscribers)
@@ -46,8 +58,8 @@ test('subscribe - Map', t => {
   const stream = new Stream('x', eventGenerator)
 
   const subscribers = new Map()
-  subscribers.set('a', subscriber)
-  subscribers.set('b', subscriber)
+  subscribers.set('a', testSubscriber(t))
+  subscribers.set('b', testSubscriber(t))
 
   stream.subscribe(subscribers)
 })
@@ -55,7 +67,7 @@ test('subscribe - Map', t => {
 
 test('unsubscribe - uknown name', t => {
   const stream = new Stream('x', eventGenerator)
-  stream.subscribeOne('a', subscriber)
+  stream.subscribeOne('a', testSubscriber(t))
 
   // error since no such name
   stream.unsubscribe('unknown')
@@ -63,7 +75,7 @@ test('unsubscribe - uknown name', t => {
 
 test('unsubscribe - existing name', t => {
   const stream = new Stream('x', eventGenerator)
-  stream.subscribeOne('a', subscriber)
+  stream.subscribeOne('a', testSubscriber(t))
 
   // correct name
   stream.unsubscribe('a')
@@ -79,7 +91,7 @@ test('unsubscribeAll - none', t => {
 test('unsubscribeAll - one', t => {
   const stream = new Stream('x', eventGenerator)
 
-  stream.subscribeOne('a', subscriber)
+  stream.subscribeOne('a', testSubscriber(t))
 
   // no subscribers to unsubscribe
   stream.unsubscribeAll()
@@ -90,8 +102,8 @@ test('unsubscribeAll - two', t => {
   const stream = new Stream('x', eventGenerator)
 
   const subscribers = {
-    a: subscriber,
-    b: subscriber
+    a: testSubscriber(t),
+    b: testSubscriber(t)
   }
 
   stream.subscribe(subscribers)

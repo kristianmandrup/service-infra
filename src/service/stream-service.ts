@@ -1,7 +1,6 @@
 import { Service } from './service'
-import { Connector } from './connector'
+import { IConnectable, Connector } from '../connector'
 import { Subscription } from '@reactivex/rxjs'
-import { IConnectable } from './connector'
 
 export class StreamService implements IConnectable {
   // Controls internal service stream
