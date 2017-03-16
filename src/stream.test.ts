@@ -11,31 +11,41 @@ function testSubscriber(t) {
   })
 }
 
+function createEvent(index = 1) {
+  return new Event('counter', { type: 'count', number: index })
+}
+
 const eventGenerator = Observable.range(1, 2).map(index => {
   console.log('new event', index)
-  return new Event('counter', { type: 'count', number: index }).msg
+  return createEvent(index).msg
 })
 
+function createStream(name = 'x') {
+  // return new Stream(name, eventGenerator)
+  return new Stream(name)
+}
+
+
 test('new', t => {
-  const stream = new Stream('x', eventGenerator)
+  const stream = createStream()
   t.is(stream.constructor, Stream)
 })
 
 test('subscribeOne - invalid name', async t => {
-  const stream = new Stream('x', eventGenerator)
+  const stream = createStream()
   // error since no name
   stream.subscribeOne(null, testSubscriber(t))
 })
 
 test('subscribeOne - valid name', async t => {
-  const stream = new Stream('x', eventGenerator)
+  const stream = createStream()
 
   // good subscriber with name
   stream.subscribeOne('a', testSubscriber(t))
 })
 
 test('subscribe - Object', t => {
-  const stream = new Stream('x', eventGenerator)
+  const stream = createStream()
 
   const subscribers = {
     a: testSubscriber(t),
@@ -43,10 +53,11 @@ test('subscribe - Object', t => {
   }
 
   stream.subscribe(subscribers)
+  stream.emit(createEvent().msg)
 })
 
 test('subscribe - Map', t => {
-  const stream = new Stream('x', eventGenerator)
+  const stream = createStream()
 
   const subscribers = new Map()
   subscribers.set('a', testSubscriber(t))
@@ -57,7 +68,7 @@ test('subscribe - Map', t => {
 
 
 test('unsubscribe - uknown name', t => {
-  const stream = new Stream('x', eventGenerator)
+  const stream = createStream()
   stream.subscribeOne('a', testSubscriber(t))
 
   // error since no such name
@@ -65,7 +76,7 @@ test('unsubscribe - uknown name', t => {
 })
 
 test('unsubscribe - existing name', t => {
-  const stream = new Stream('x', eventGenerator)
+  const stream = createStream()
   stream.subscribeOne('a', testSubscriber(t))
 
   // correct name
@@ -73,14 +84,14 @@ test('unsubscribe - existing name', t => {
 })
 
 test('unsubscribeAll - none', t => {
-  const stream = new Stream('x', eventGenerator)
+  const stream = createStream()
 
   // no subscribers to unsubscribe
   stream.unsubscribeAll()
 })
 
 test('unsubscribeAll - one', t => {
-  const stream = new Stream('x', eventGenerator)
+  const stream = createStream()
 
   stream.subscribeOne('a', testSubscriber(t))
 
@@ -90,7 +101,7 @@ test('unsubscribeAll - one', t => {
 
 
 test('unsubscribeAll - two', t => {
-  const stream = new Stream('x', eventGenerator)
+  const stream = createStream()
 
   const subscribers = {
     a: testSubscriber(t),

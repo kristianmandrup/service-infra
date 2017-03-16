@@ -6,7 +6,7 @@ export interface IStreamFactory {
 }
 
 export class StreamFactory implements IStreamFactory {
-  public createStream(name: string, eventSource: Observable<Event>): Stream {
+  public createStream(name: string, eventSource?: Subject<IEvent>): Stream {
     return new Stream(name, eventSource)
   }
 }
@@ -20,14 +20,14 @@ function* entries(obj) {
  * Abstracted Stream, such as Observable
 **/
 export class Stream {
-  protected _source: Observable<IEvent>
+  protected _source: Subject<IEvent>
   protected subscriptions: Map<string, Subscription>
   protected _name: string
   public static factory = new StreamFactory()
 
-  constructor(name: string, eventSource: Observable<IEvent>) {
+  constructor(name: string, eventSource?: Subject<IEvent>) {
     this._name = name
-    this._source = eventSource
+    this._source = eventSource || new Subject()
     this.subscriptions = new Map()
   }
 
@@ -87,5 +87,9 @@ export class Stream {
     for (let key of this.subscriptions.keys()) {
       this.unsubscribe(key)
     }
+  }
+
+  emit(event: IEvent) {
+    this.source.next(event)
   }
 }
