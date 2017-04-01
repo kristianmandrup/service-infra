@@ -1,4 +1,6 @@
 # Service Infrastructuee
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/kristianmandrup/service-infra.svg)](https://greenkeeper.io/)
 Generic Service Infrastructure, designed for the front-end.
 
 ## Design
